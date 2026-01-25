@@ -8,8 +8,8 @@
 
   vars:
     provider:
-      ip_address: "{{ 172.19.152.186 }}"
-      api_key: "{{ LUFRPT1pZG9Pby9ITFpRSGpWM0pRYmlHczJoVjRNQ2s9M0NCZkhWTFhSK3lmaTk4SEc3bXE0V2NIZ1NQUFcwM25VeUJFSGZkeWVqVT0 }}"
+      ip_address: "{{ ansible_host }}"
+      api_key: "{{ ansible_password }}"
 
   tasks:
     - name: Get firewall system info
