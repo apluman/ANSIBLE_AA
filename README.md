@@ -1,9 +1,17 @@
-# ANSIBLE_AA
+- name: Palo Alto connectivity test
+  hosts: pa-fw-ANOT_LAB
+  connection: local
+  gather_facts: no
 
-Minimal samples for getting started.
+  collections:
+    - paloaltonetworks.panos
 
-Quick start
-1. Install Ansible:
-   - pip install ansible
-2. Run the sample playbook:
-   - ansible-playbook -i inventory/hosts.ini playbooks/sample-playbook.yml
+  vars:
+    provider:
+      ip_address: "{{ 172.19.152.186 }}"
+      api_key: "{{ LUFRPT1pZG9Pby9ITFpRSGpWM0pRYmlHczJoVjRNQ2s9M0NCZkhWTFhSK3lmaTk4SEc3bXE0V2NIZ1NQUFcwM25VeUJFSGZkeWVqVT0 }}"
+
+  tasks:
+    - name: Get firewall system info
+      panos_facts:
+        provider: "{{ provider }}"
