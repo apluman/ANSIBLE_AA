@@ -1,5 +1,5 @@
 - name: Palo Alto connectivity test
-  hosts: pa-fw-ANOT_LAB
+  hosts: 172.19.152.186
   connection: local
   gather_facts: no
 
@@ -8,7 +8,7 @@
 
   vars:
     provider:
-      ip_address: "{{ ansible_host }}"
+      ip_address: "{{ 172.19.152.186 }}"
       api_key: "{{ ansible_password }}"
 
   tasks:
