@@ -1,17 +1,8 @@
-- name: Palo Alto connectivity test
-  hosts: pa-fw-ANOT_LAB
-  connection: local
-  gather_facts: no
-
+- name: Test Palo Alto connectivity
+  hosts: all
+  gather_facts: false
   collections:
     - paloaltonetworks.panos
-
-  vars:
-    provider:
-      ip_address: "{{ 192.168.100.156 }}"
-      api_key: "{{ LUFRPT1LMUJMaTR0ZnB3bTdUSkRXRHVzZVRaZW9vVkE9M0NCZkhWTFhSK3lmaTk4SEc3bXE0WUpjZGNvUHJpRktoTGZKTk14MWc0MD0= }}"
-
   tasks:
-    - name: Get firewall system info
+    - name: Get firewall facts
       panos_facts:
-        provider: "{{ provider }}"
