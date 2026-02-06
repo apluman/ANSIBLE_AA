@@ -1,4 +1,4 @@
-- name: Get Palo Alto hostname
+- name: Check Palo Alto connectivity
   hosts: localhost
   connection: local
   gather_facts: no
@@ -12,6 +12,6 @@
         cmd: "show system info"
       register: system_info
 
-    - name: Display hostname
+    - name: Display raw output
       debug:
-        msg: "Palo Alto hostname is: {{ (system_info.stdout | from_json).response.result.hostname }}"
+        var: system_info.stdout
