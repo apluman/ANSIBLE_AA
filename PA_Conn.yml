@@ -1,22 +1,26 @@
 ---
-- name: Test Palo Alto API connectivity
-  hosts: firewalls
+- name: Test connectivity to Palo Alto Firewall
+  hosts: palo-fw
   gather_facts: no
+  connection: local
+
   collections:
     - paloaltonetworks.panos
 
   vars:
-    provider:
-      ip_address: "{{ ansible_host }}"
-      username: "api_user"
-      password: "api_password"
+    panos_provider:
+      hostname: "{{ inventory_hostname }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
 
   tasks:
-    - name: Get system info from Palo Alto
+    - name: Test API connectivity by gathering facts
       panos_facts:
-        provider: "{{ provider }}"
-      register: result
+        provider: "{{ panos_provider }}"
+      register: panos_result
 
-    - name: Show system info
+    - name: Connectivity success
       debug:
-        var: result
+        msg: >
+          Connected to firewall {{ panos_result.ansible_facts.net_hostname }}
+          (PAN-OS {{ panos_result.ansible_facts.net_version }})
