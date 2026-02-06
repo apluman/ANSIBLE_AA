@@ -1,8 +1,12 @@
-- name: Test Palo Alto connection
+- name: Get Palo Alto system info
   hosts: localhost
   connection: local
   gather_facts: no
   tasks:
-    - name: Show something
-      debug:
-        msg: "Hello"
+    - name: Show system info
+      paloaltonetworks.panos.panos_op:
+        provider:
+          ip_address: "{{ panos_ip }}"
+          username: "{{ panos_user }}"
+          password: "{{ panos_pass }}"
+        cmd: "show system info"
