@@ -1,17 +1,16 @@
-- name: Show Palo Alto interfaces
+- name: Get Palo Alto interface facts
   hosts: localhost
   connection: local
   gather_facts: no
   tasks:
-    - name: Get interface info
-      paloaltonetworks.panos.panos_op:
+    - name: Collect interface facts
+      paloaltonetworks.panos.panos_interface_facts:
         provider:
           ip_address: 192.168.17.128
           username: admin
-          password: admin
-        cmd: "show interface all"
-      register: interface_output
+          password: admin 
+      register: interface_facts
 
     - name: Display interface info
       debug:
-        var: interface_output
+        var: interface_facts.interfaces
