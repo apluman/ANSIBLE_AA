@@ -18,7 +18,7 @@
   tasks:
     - name: Run policy match test
       panos_op:
-        ip_address: "{{ ansible_host }}"
+        ip_address: "{{ host }}"
         username: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
         cmd: >
