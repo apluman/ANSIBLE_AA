@@ -1,4 +1,7 @@
-- name: Get Palo Alto info
+- name: AWX sanity test
   hosts: localhost
   connection: local
   gather_facts: no
+  tasks:
+    - debug:
+        msg: "AWX inventory is working"
