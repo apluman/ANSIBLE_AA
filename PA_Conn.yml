@@ -1,8 +1,26 @@
-- name: Run 'show system info' on all firewalls
-  community.general.panos_op:
-    ip_address: "{{ item }}"
-    username: "{{ ansible_user }}"
-    password: "{{ ansible_password }}"
-    cmd: "<show><system><info></info></system></show>"
-  loop: "{{ firewalls }}"
-  register: results
+---
+- name: Check Palo Alto connectivity and get hostnames
+  hosts: firewalls
+  gather_facts: no
+
+  tasks:
+
+    - name: Run 'show system info' on Palo Alto
+      community.general.panos_op:
+        ip_address: "{{ palo }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        cmd: "<show><system><info></info></system></show>"
+        provider: null
+      register: system_info
+
+    - name: Display hostname
+      debug:
+        msg: >
+          Firewall {{ inventory_hostname }} hostname is
+          {{ system_info.stdout | xmltodict | dict2items
+             | selectattr('key','equalto','system')
+             | map(attribute='value') | first
+             | dict2items
+             | selectattr('key','equalto','hostname')
+             | map(attribute='value') | first }}
