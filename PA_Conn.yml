@@ -1,17 +1,18 @@
-- name: Palo Alto connectivity test
-  hosts: 172.19.152.186
-  connection: local
+---
+- name: Get Palo Alto info
+  hosts: palo
   gather_facts: no
-
   collections:
     - paloaltonetworks.panos
-
-  vars:
-    provider:
-      ip_address: "{{ 172.19.152.186 }}"
-      api_key: "{{ ansible_password }}"
-
   tasks:
-    - name: Get firewall system info
-      panos_facts:
-        provider: "{{ provider }}"
+    - name: Get firewall facts
+      panos_op:
+        provider:
+          ip_address: "{{ inventory_hostname }}"
+          username: "{{ ansible_user }}"
+          password: "{{ ansible_password }}"
+        cmd: "show system info"
+      register: result
+
+    - debug:
+        var: result
