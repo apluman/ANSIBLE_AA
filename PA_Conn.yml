@@ -14,8 +14,8 @@
       password: "{{ ansible_password }}"
 
   tasks:
-- name: Test API connectivity
-  panos_op:
-    provider: "{{ panos_provider }}"
-    cmd: "show system info"
-
+  - name: Test API connectivity
+    panos_op:
+      provider: "{{ panos_provider }}"
+      cmd: "show system info"
+  
