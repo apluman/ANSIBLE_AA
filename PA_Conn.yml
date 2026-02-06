@@ -1,37 +1,22 @@
 ---
-- name: Test connectivity to Palo Alto firewalls
-  hosts: localhost
+- name: Test Palo Alto API connectivity
+  hosts: palo
   gather_facts: no
+  collections:
+    - paloaltonetworks.panos
+
   vars:
-    # List of firewall IPs from your AWX inventory
-    firewalls:
-      - 192.168.17.128
-      - 192.168.17.129
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "api_user"
+      password: "api_password"
 
   tasks:
+    - name: Get system info from Palo Alto
+      panos_facts:
+        provider: "{{ provider }}"
+      register: result
 
-    - name: Test connection to each firewall
-      community.general.panos_op:
-        ip_address: "{{ item }}"
-        username: "{{ ansible_user }}"       # Comes from AWX Credential
-        password: "{{ ansible_password }}"   # Comes from AWX Credential
-        cmd: "<show><system><info></info></system></show>"
-        provider: null
-      loop: "{{ firewalls }}"
-      loop_control:
-        label: "{{ item }}"
-      register: results
-
-    - name: Display connectivity results
+    - name: Show system info
       debug:
-        msg: >
-          Firewall {{ item.item }} is reachable.
-          Hostname: {{
-            item.stdout | xmltodict | dict2items
-            | selectattr('key','equalto','system')
-            | map(attribute='value') | first
-            | dict2items
-            | selectattr('key','equalto','hostname')
-            | map(attribute='value') | first
-          }}
-      loop: "{{ results.results }}"
+        var: result
