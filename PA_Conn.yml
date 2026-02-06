@@ -1,12 +1,17 @@
-- name: Get Palo Alto system info
+- name: Show Palo Alto interfaces
   hosts: localhost
   connection: local
   gather_facts: no
   tasks:
-    - name: Show system info
+    - name: Get interface info
       paloaltonetworks.panos.panos_op:
         provider:
-          ip_address: 192.168.17.128
-          username: admin
-          password: admin
-        cmd: "show system info"
+          ip_address: "{{ 192.168.17.128 }}"
+          username: "{{ admin }}"
+          password: "{{ admin }}"
+        cmd: "show interface all"
+      register: interface_output
+
+    - name: Display interface info
+      debug:
+        var: interface_output
