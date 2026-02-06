@@ -1,6 +1,6 @@
 ---
 - name: Test connectivity to Palo Alto Firewall
-  hosts: pa-fw
+  hosts: palo-fw
   gather_facts: no
   connection: local
 
