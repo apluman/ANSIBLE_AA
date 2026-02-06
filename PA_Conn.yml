@@ -13,7 +13,7 @@
       username: "{{ ansible_user }}"
       password: "{{ ansible_password }}"
 
-  tasks:
+ tasks:
     - name: Test API connectivity by gathering facts
       panos_facts:
         provider: "{{ panos_provider }}"
@@ -22,5 +22,5 @@
     - name: Connectivity success
       debug:
         msg: >
-          Connected to firewall {{ panos_result.ansible_facts.net_hostname }}
-          (PAN-OS {{ panos_result.ansible_facts.net_version }})
+          Connected to {{ panos_result.ansible_facts.net_hostname }}
+          running PAN-OS {{ panos_result.ansible_facts.net_version }}
