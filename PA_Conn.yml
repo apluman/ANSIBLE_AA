@@ -1,6 +1,6 @@
 ---
 - name: Get Palo Alto info
-  hosts: palo
+  hosts: 192.168.17.128
   gather_facts: no
   collections:
     - paloaltonetworks.panos
