@@ -1,6 +1,6 @@
 ---
 - name: Test Palo Alto API connectivity
-  hosts: palo-fw
+  hosts: palo
   gather_facts: no
   connection: local
 
