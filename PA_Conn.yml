@@ -1,17 +1,35 @@
+---
 - name: Check Palo Alto connectivity and get hostname
   hosts: localhost
-  connection: local
   gather_facts: no
+  vars:
+    palo_host: "192.168.1.10"        # Replace with your VM's management IP
+    palo_username: "admin"           # Your PAN-OS username
+    palo_password: "YourPassword"    # Your PAN-OS password
+
   tasks:
-    - name: Run 'show system info' command
-      paloaltonetworks.panos.panos_op:
-        provider:
-          ip_address: 192.168.17.128      # Replace with your firewall IP
-          username: admin                 # Replace with your username
-          password: admin                 # Replace with your password
-        cmd: "show system info"
+
+    - name: Ensure pan-os-python is installed
+      pip:
+        name: pan-os-python
+        state: present
+      delegate_to: localhost
+
+    - name: Ensure jmespath is installed (for JSON queries)
+      pip:
+        name: jmespath
+        state: present
+      delegate_to: localhost
+
+    - name: Run 'show system info' on Palo Alto
+      community.general.panos_op:
+        ip_address: "{{ palo_host }}"
+        username: "{{ palo_username }}"
+        password: "{{ palo_password }}"
+        cmd: "<show><system><info></info></system></show>"
+        provider: null
       register: system_info
 
-    - name: Display hostname
+    - name: Display Palo Alto hostname
       debug:
-        msg: "Palo Alto hostname is: {{ system_info.stdout | from_json | json_query('response.result.hostname') }}"
+        msg: "Hostname is {{ system_info.stdout | xmltodict | dict2items | selectattr('key','equalto','system') | map(attribute='value') | first | dict2items | selectattr('key','equalto','hostname') | map(attribute='value') | first }}"
