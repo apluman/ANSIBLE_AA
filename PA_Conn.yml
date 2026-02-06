@@ -6,7 +6,7 @@
     - name: Show system info
       paloaltonetworks.panos.panos_op:
         provider:
-          ip_address: "{{ 192.168.17.128 }}"
-          username: "{{ admin }}"
-          password: "{{ admin }}"
+          ip_address: 192.168.17.128
+          username: admin
+          password: admin
         cmd: "show system info"
