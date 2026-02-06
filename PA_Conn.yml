@@ -1,18 +1,17 @@
-- name: Get Palo Alto interface facts
+- name: Check Palo Alto connectivity and get hostname
   hosts: localhost
   connection: local
   gather_facts: no
   tasks:
-    - name: Collect all facts
-      paloaltonetworks.panos.panos_facts:
+    - name: Run 'show system info' command
+      paloaltonetworks.panos.panos_op:
         provider:
-          ip_address: 192.168.17.128
-          username: admin
-          password: admin
-      register: all_facts
+          ip_address: 192.168.17.128      # Replace with your firewall IP
+          username: admin                 # Replace with your username
+          password: admin                 # Replace with your password
+        cmd: "show system info"
+      register: system_info
 
-    - name: Show each interface
+    - name: Display hostname
       debug:
-        msg: "Interface {{ item.name }} IP {{ item.ip }} Status {{ item.link_state }}"
-      loop: "{{ all_facts.ansible_facts.network_interfaces }}"
-
+        msg: "Palo Alto hostname is: {{ system_info.stdout | from_json | json_query('response.result.hostname') }}"
