@@ -3,14 +3,16 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: Collect interface facts
-      paloaltonetworks.panos.panos_interface_facts:
+    - name: Collect all facts
+      paloaltonetworks.panos.panos_facts:
         provider:
           ip_address: 192.168.17.128
           username: admin
-          password: admin 
-      register: interface_facts
+          password: admin  
+      register: all_facts
 
-    - name: Display interface info
-      debug:
-        var: interface_facts.interfaces
+  - name: Show each interface
+  debug:
+    msg: "Interface {{ item.name }} IP {{ item.ip }} Status {{ item.link_state }}"
+  loop: "{{ all_facts.ansible_facts.interfaces }}"
+
