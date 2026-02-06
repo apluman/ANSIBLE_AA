@@ -1,6 +1,6 @@
 ---
 - name: Test Palo Alto API connectivity
-  hosts: palo
+  hosts: firewalls
   gather_facts: no
   collections:
     - paloaltonetworks.panos
