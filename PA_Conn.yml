@@ -1,7 +1,20 @@
-- name: Test API connectivity
-  panos_op:
-    provider:
-      ip_address: "{{ ansible_host | default(inventory_hostname) }}"
-      username: "{{ ansible_user }}"
-      password: "{{ ansible_password }}"
-    cmd: "show system info"
+---
+- name: Test Palo Alto API connectivity
+  hosts: palo-fw
+  gather_facts: no
+  connection: local
+
+  collections:
+    - paloaltonetworks.panos
+
+  tasks:
+    - name: Test API connectivity
+      panos_op:
+        ip_address: "{{ ansible_host | default(inventory_hostname) }}"
+        username: "{{ ansible_user }}"
+        password: "{{ ansible_password }}"
+        cmd: "show system info"
+      register: result
+
+    - debug:
+        msg: "Connected successfully to Palo Alto firewall"
