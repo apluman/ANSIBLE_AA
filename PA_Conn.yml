@@ -1,19 +1,6 @@
----
-- name: Get Palo Alto info
-  hosts: palo         # must match inventory group
+- name: AWX inventory test
+  hosts: all
   gather_facts: no
-  collections:
-    - paloaltonetworks.panos
   tasks:
-    - name: Get firewall facts
-      panos_op:
-        provider:
-          ip_address: "{{ inventory_hostname }}"
-          username: "{{ ansible_user }}"
-          password: "{{ ansible_password }}"
-        cmd: "show system info"
-      register: result
-
-    - name: Show results
-      debug:
-        var: result
+    - debug:
+        msg: "Host {{ inventory_hostname }} is reachable"
