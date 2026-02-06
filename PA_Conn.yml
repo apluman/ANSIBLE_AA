@@ -8,11 +8,10 @@
         provider:
           ip_address: 192.168.17.128
           username: admin
-          password: admin  
+          password: admin
       register: all_facts
 
-  - name: Show each interface
-  debug:
-    msg: "Interface {{ item.name }} IP {{ item.ip }} Status {{ item.link_state }}"
-  loop: "{{ all_facts.ansible_facts.interfaces }}"
-
+    - name: Show each interface
+      debug:
+        msg: "Interface {{ item.name }} IP {{ item.ip }} Status {{ item.link_state }}"
+      loop: "{{ all_facts.ansible_facts.interfaces }}"
