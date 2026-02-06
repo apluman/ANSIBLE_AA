@@ -7,14 +7,28 @@
   collections:
     - paloaltonetworks.panos
 
+
+  vars:
+    # Define the parameters of the traffic you want to test
+    test_src: "10.0.0.1"
+    test_dst: "8.8.8.8"
+    test_app: "dns"
+    test_service: "udp/53"
+
   tasks:
-    - name: Test API connectivity
+    - name: Run policy match test
       panos_op:
-        ip_address: "{{ host }}"
+        ip_address: "{{ ansible_host }}"
         username: "{{ ansible_user }}"
         password: "{{ ansible_password }}"
-        cmd: "show system info"
-      register: result
+        cmd: >
+          test security-policy-match
+          source {{ test_src }}
+          destination {{ test_dst }}
+          application {{ test_app }}
+          service {{ test_service }}
+      register: policy_match_result
 
-    - debug:
-        msg: "Connected successfully to Palo Alto firewall"
+    - name: Show policy match result
+      debug:
+        var: policy_match_result.stdout
