@@ -1,17 +1,8 @@
-- name: Check Palo Alto connectivity
-  hosts: localhost
-  connection: local
-  gather_facts: no
-  tasks:
-    - name: Run 'show system info' on the firewall
-      paloaltonetworks.panos.panos_op:
-        provider:
-          ip_address: 192.168.17.128  # Replace with your firewall IP
-          username: admin             # Replace with your username
-          password: admin             # Replace with your password
-        cmd: "show system info"
-      register: system_info
-
-    - name: Display raw output
-      debug:
-        var: system_info.stdout
+- name: Run 'show system info' on all firewalls
+  community.general.panos_op:
+    ip_address: "{{ item }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+    cmd: "<show><system><info></info></system></show>"
+  loop: "{{ firewalls }}"
+  register: results
