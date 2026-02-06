@@ -14,13 +14,8 @@
       password: "{{ ansible_password }}"
 
   tasks:
-    - name: Test API connectivity by gathering facts
-      panos_facts:
-        provider: "{{ panos_provider }}"
-      register: panos_result
+- name: Test API connectivity
+  panos_op:
+    provider: "{{ panos_provider }}"
+    cmd: "show system info"
 
-    - name: Connectivity success
-      debug:
-        msg: >
-          Connected to {{ panos_result.ansible_facts.net_hostname }}
-          running PAN-OS {{ panos_result.ansible_facts.net_version }}
